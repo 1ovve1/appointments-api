@@ -23,16 +23,14 @@ class ClientControllerTest extends TestCase
     ];
 
     const JSON_RESOURCE_STRUCTURE = [
-        'data' => [
+        'data' =>
             self::JSON_STRUCTURE
-        ]
     ];
 
     const JSON_RESOURCE_COLLECTION_STRUCTURE = [
         'data' => [
-            '*' => [
+            '*' =>
                 self::JSON_STRUCTURE
-            ]
         ],
         'links',
         'meta'
@@ -56,13 +54,20 @@ class ClientControllerTest extends TestCase
 
     function testIndex(): void
     {
-        $this->get(route('clients.index'))
+        $this->getJson(route('clients.index'))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    function testIndexAsClient(): void
+    {
+        $this->actingAs($this->client->user)
+            ->getJson(route('clients.index'))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     function testShow(): void
     {
-        $this->get(route('clients.show', ['client' => $this->client->id]))
+        $this->getJson(route('clients.show', ['client' => $this->client->id]))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -79,7 +84,7 @@ class ClientControllerTest extends TestCase
         $mockClient = Client::factory()->make();
         $payload = $mockClient->toArray();
 
-        $this->post(route('clients.store'), $payload)
+        $this->postJson(route('clients.store'), $payload)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -89,37 +94,41 @@ class ClientControllerTest extends TestCase
         $payload = $mockClient->toArray();
 
         $this->actingAs($this->client->user)
-            ->post(route('clients.store'), $payload)
-            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+            ->postJson(route('clients.store'), $payload)
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     function testUpdate(): void
     {
         $payload = Client::factory()->make()->toArray();
 
-        $this->put(route('clients.update', ['client' => $this->client->id]), $payload)
+        $this->putJson(route('clients.update', ['client' => $this->client->id]), $payload)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testUpdateAsUser(): void
+    function testUpdateAsClent(): void
     {
-        $payload = Client::factory()->make()->toArray();
+        $payload = Client::factory()->make([
+            'id' => $this->client->id,
+            'user_id' => $this->client->user->id,
+        ])->toArray();
 
-        $this->put(route('clients.update', ['client' => $this->client->id]), $payload)
+        $this->actingAs($this->client->user)
+            ->putJson(route('clients.update', ['client' => $this->client->id]), $payload)
             ->assertStatus(Response::HTTP_ACCEPTED)
             ->assertJsonStructure(self::JSON_RESOURCE_STRUCTURE);
     }
 
     function testDelete(): void
     {
-        $this->delete(route('clients.destroy', ['client' => $this->client->id]))
+        $this->deleteJson(route('clients.destroy', ['client' => $this->client->id]))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     function testDeleteAsClient(): void
     {
         $this->actingAs($this->client->user)
-            ->delete(route('clients.destroy', ['client' => $this->client->id]))
-            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+            ->deleteJson(route('clients.destroy', ['client' => $this->client->id]))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }

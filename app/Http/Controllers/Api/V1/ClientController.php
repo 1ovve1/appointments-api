@@ -5,16 +5,25 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Http\Resources\ClientResource;
 use App\Models\Client;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClientController extends Controller
 {
+    public function __construct() {
+        $this->authorizeResource(Client::class, 'client');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $clients = Client::with('user')->paginate();
+
+        return ClientResource::collect($clients)
+            ->response()->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -22,7 +31,12 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+        $payload = $request->validated();
+
+        $client = Client::create($payload);
+
+        return (new ClientResource($client))
+            ->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -30,7 +44,8 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return (new ClientResource($client))
+            ->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -38,7 +53,12 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        //
+        $payload = $request->validated();
+
+        $client->update($payload);
+
+        return (new ClientResource($client))
+            ->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -46,6 +66,8 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }
