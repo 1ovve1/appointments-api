@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Specialist;
 use Illuminate\Database\Seeder;
 
 class SpecialistSeeder extends Seeder
@@ -12,6 +12,8 @@ class SpecialistSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Specialist::factory()
+            ->times(20)
+            ->create();
     }
 }

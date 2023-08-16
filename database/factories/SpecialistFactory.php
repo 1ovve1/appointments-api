@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,15 @@ class SpecialistFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::factory()->create();
+
         return [
-            //
+            'user_id' => $user->id,
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'patronymic' => fake()->lastName(),
+            'schedule' => fake()->sentences(3, true),
+            'description' => fake()->text()
         ];
     }
 }
