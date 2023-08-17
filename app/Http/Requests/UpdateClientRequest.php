@@ -22,9 +22,6 @@ class UpdateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string', 'max:255'],
-            'last_name' => ['string', 'max:255'],
-            'patronymic' => ['string', 'max:255'],
             'phone' => ['regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10'],
         ];
     }

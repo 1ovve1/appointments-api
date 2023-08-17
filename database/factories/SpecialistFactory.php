@@ -21,9 +21,6 @@ class SpecialistFactory extends Factory
 
         return [
             'user_id' => $user->id,
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'patronymic' => fake()->lastName(),
             'schedule' => fake()->sentences(3, true),
             'description' => fake()->text()
         ];

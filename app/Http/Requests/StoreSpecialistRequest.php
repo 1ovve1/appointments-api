@@ -22,7 +22,7 @@ class StoreSpecialistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shedule' => ['required'],
         ];
     }
 }

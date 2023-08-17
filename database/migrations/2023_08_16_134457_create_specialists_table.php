@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')->unique()->constrained();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('patronymic')->nullable();
             $table->string("schedule");
             $table->text("description");
 

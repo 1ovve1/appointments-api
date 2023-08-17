@@ -22,7 +22,8 @@ class UpdateSpecialistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shedule' => ['required', 'string'],
+            'descritpion' => ['required', 'text']
         ];
     }
 }

@@ -21,9 +21,6 @@ class ClientFactory extends Factory
 
         return [
             'user_id' => $user->id,
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'patronymic' => fake()->lastName(),
             'phone' => fake()->phoneNumber(),
         ];
     }
