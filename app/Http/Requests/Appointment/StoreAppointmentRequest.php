@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Appointment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateClientRequest extends FormRequest
+class StoreAppointmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class UpdateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10'],
+            'client_id' => ['required', 'exists:clients,id'],
+            'specialist_id' => ['required', 'exists:specialists,id'],
         ];
     }
 }

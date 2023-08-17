@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSpecialistRequest extends FormRequest
+class StoreClientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class StoreSpecialistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shedule' => ['required', 'string'],
-            'descritpion' => ['required', 'text']
+            'phone' => ['required', 'string', 'min:10'],
         ];
     }
 }

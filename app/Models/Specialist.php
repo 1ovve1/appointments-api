@@ -12,7 +12,7 @@ class Specialist extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'shedule', 'description'
+        'user_id', 'schedule', 'description'
     ];
 
 

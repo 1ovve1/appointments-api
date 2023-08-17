@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Specialist;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SpecialistAppointmentsController extends Controller

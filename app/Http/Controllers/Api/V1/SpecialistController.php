@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSpecialistRequest;
-use App\Http\Requests\UpdateSpecialistRequest;
+use App\Http\Requests\Specialist\StoreSpecialistRequest;
+use App\Http\Requests\Specialist\UpdateSpecialistRequest;
 use App\Http\Resources\SpecialistResource;
 use App\Models\Specialist;
 use Symfony\Component\HttpFoundation\Response;

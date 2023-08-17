@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Specialist;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAppointmentRequest extends FormRequest
+class UpdateSpecialistRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class StoreAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => ['required', 'exists:clients,id'],
-            'specialist_id' => ['required', 'exists:specialists,id'],
+            'schedule' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string']
         ];
     }
 }
