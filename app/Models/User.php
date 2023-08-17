@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,8 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
+        'first_name',
+        'last_name',
+        'patronymic',
         'password',
     ];
 
@@ -42,4 +45,55 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * @return HasOne
+     */
+    function client(): HasOne
+    {
+        return $this->hasOne(Client::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    function specialist(): HasOne
+    {
+        return $this->hasOne(Specialist::class, 'user_id', 'id');
+    }
+
+    /**
+     * TODO: admins currently not supported
+     *
+     * @return boolean
+     */
+    function isAdmin(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    function isSpecialist(): bool
+    {
+        return $this->specialist !== null;
+    }
+
+    /**
+     * @return boolean
+     */
+    function isClient(): bool
+    {
+        return $this->client !== null;
+    }
+
+    /**
+     * @param Appointment $appointment
+     * @return boolean
+     */
+    function hasAppointment(Appointment $appointment): bool
+    {
+        return $this->appointments?->contains(fn($model) => $model->id === $appointment->id) ?? false;
+    }
 }
