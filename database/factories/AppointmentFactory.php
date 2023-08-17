@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Client;
+use App\Models\Specialist;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,12 @@ class AppointmentFactory extends Factory
      */
     public function definition(): array
     {
+        $clientsId = Client::all()->pluck('id')->toArray();
+        $specialistsId = Specialist::all()->pluck('id')->toArray();
+
         return [
-            //
+            'specialist_id' => fake()->randomElement($specialistsId),
+            'client_Id' => fake()->randomElement($clientsId),
         ];
     }
 }
