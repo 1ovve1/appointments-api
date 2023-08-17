@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Client extends Model
@@ -12,7 +13,7 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'first_name', 'last_name', 'patronymic', 'phone'
+        'user_id', 'phone'
     ];
 
 
@@ -25,6 +26,14 @@ class Client extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    /**
      * Check if client the same as requested user
      *
      * @param User $user
@@ -33,5 +42,10 @@ class Client extends Model
     function same(User $user): bool
     {
         return $this->user_id === $user->id;
+    }
+
+    function hasAppointment(Appointment $appointment): bool
+    {
+        return $this->appointments?->contains(fn($model) => $model->id === $appointment->id) ?? false;
     }
 }

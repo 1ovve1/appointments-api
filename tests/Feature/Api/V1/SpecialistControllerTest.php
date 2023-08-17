@@ -13,7 +13,7 @@ class SpecialistControllerTest extends TestCase
         'shedule',
         'description',
         'user' => [
-            'login',
+            'username',
             'email',
             'first_name',
             'last_name',
@@ -48,7 +48,10 @@ class SpecialistControllerTest extends TestCase
 
     function tearDown(): void
     {
+        $specialistUser = $this->specialist->user;
+
         $this->specialist->delete();
+        $specialistUser->delete();
 
         parent::tearDown();
     }

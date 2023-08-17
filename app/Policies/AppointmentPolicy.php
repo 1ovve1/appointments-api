@@ -13,7 +13,7 @@ class AppointmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -21,7 +21,7 @@ class AppointmentPolicy
      */
     public function view(User $user, Appointment $appointment): bool
     {
-        //
+        return $appointment->client->same($user) || $appointment->specialist->same($user) || $user->isAdmin();
     }
 
     /**
@@ -29,7 +29,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isClient() || $user->isAdmin();
     }
 
     /**
@@ -37,7 +37,7 @@ class AppointmentPolicy
      */
     public function update(User $user, Appointment $appointment): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -45,7 +45,8 @@ class AppointmentPolicy
      */
     public function delete(User $user, Appointment $appointment): bool
     {
-        //
+        return $user->isAdmin()
+            || $user->client?->hasAppointment($appointment);
     }
 
     /**
@@ -53,7 +54,7 @@ class AppointmentPolicy
      */
     public function restore(User $user, Appointment $appointment): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +62,6 @@ class AppointmentPolicy
      */
     public function forceDelete(User $user, Appointment $appointment): bool
     {
-        //
+        return false;
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -46,11 +44,19 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    function client(): HasMany
+    function client(): HasOne
     {
-        return $this->hasMany(Client::class);
+        return $this->hasOne(Client::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    function specialist(): HasOne
+    {
+        return $this->hasOne(Specialist::class, 'user_id', 'id');
     }
 
     /**
@@ -64,12 +70,27 @@ class User extends Authenticatable
     }
 
     /**
-     * TODO: specialists currently not supported
-     *
      * @return boolean
      */
     function isSpecialist(): bool
     {
-        return false;
+        return $this->specialist !== null;
+    }
+
+    /**
+     * @return boolean
+     */
+    function isClient(): bool
+    {
+        return $this->client !== null;
+    }
+
+    /**
+     * @param Appointment $appointment
+     * @return boolean
+     */
+    function hasAppointment(Appointment $appointment): bool
+    {
+        return $this->appointments?->contains(fn($model) => $model->id === $appointment->id) ?? false;
     }
 }

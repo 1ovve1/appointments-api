@@ -23,7 +23,7 @@ class AppointmentFactory extends Factory
 
         return [
             'specialist_id' => fake()->randomElement($specialistsId),
-            'client_Id' => fake()->randomElement($clientsId),
+            'client_id' => fake()->randomElement($clientsId),
         ];
     }
 }

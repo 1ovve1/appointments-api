@@ -12,7 +12,7 @@ class ClientControllerTest extends TestCase
         'id',
         'phone',
         'user' => [
-            'login',
+            'username',
             'email',
             'first_name',
             'last_name',
@@ -47,7 +47,10 @@ class ClientControllerTest extends TestCase
 
     function tearDown(): void
     {
+        $clientUser = $this->client->user;
+
         $this->client->delete();
+        $clientUser->delete();
 
         parent::tearDown();
     }

@@ -19,7 +19,7 @@ class SpecialistResource extends JsonResource
             'shedule' => $this->shedule,
             'description' => $this->description,
             'user' => [
-                'login' => $this->user->login,
+                'username' => $this->user->username,
                 'email' => $this->user->email,
                 'first_name' => $this->user->first_name,
                 'last_name' => $this->user->last_name,
