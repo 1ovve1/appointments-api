@@ -1,19 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSpecialistRequest;
 use App\Http\Requests\UpdateSpecialistRequest;
+use App\Http\Resources\SpecialistResource;
 use App\Models\Specialist;
+use Symfony\Component\HttpFoundation\Response;
 
 class SpecialistController extends Controller
 {
+    public function __construct() {
+        $this->authorizeResource(Specialist::class, 'specialist');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $specialists = Specialist::with('user')->paginate();
+
+        return SpecialistResource::collection($specialists)
+            ->response()->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -21,7 +31,15 @@ class SpecialistController extends Controller
      */
     public function store(StoreSpecialistRequest $request)
     {
-        //
+        $payload = $request->validated();
+
+        $specialist = Specialist::create([
+            ...$payload,
+            'user_id' => auth()->user()->id
+        ]);
+
+        return (new SpecialistResource($specialist))
+            ->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -29,7 +47,8 @@ class SpecialistController extends Controller
      */
     public function show(Specialist $specialist)
     {
-        //
+        return (new SpecialistResource($specialist))
+            ->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -37,7 +56,12 @@ class SpecialistController extends Controller
      */
     public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-        //
+        $payload = $request->validated();
+
+        $specialist->update($payload);
+
+        return (new SpecialistResource($specialist))
+            ->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -45,6 +69,8 @@ class SpecialistController extends Controller
      */
     public function destroy(Specialist $specialist)
     {
-        //
+        $specialist->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

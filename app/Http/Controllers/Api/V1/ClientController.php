@@ -33,7 +33,10 @@ class ClientController extends Controller
     {
         $payload = $request->validated();
 
-        $client = Client::create($payload);
+        $client = Client::create([
+            ...$payload,
+            'user_id' => auth()->user()->id
+        ]);
 
         return (new ClientResource($client))
             ->response()->setStatusCode(Response::HTTP_CREATED);

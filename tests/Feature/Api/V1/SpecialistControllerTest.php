@@ -10,14 +10,14 @@ class SpecialistControllerTest extends TestCase
 {
     const JSON_STRUCTURE = [
         'id',
-        'first_name',
-        'last_name',
-        'patronymic',
         'shedule',
         'description',
         'user' => [
             'login',
             'email',
+            'first_name',
+            'last_name',
+            'patronymic',
             'created_at',
             'updated_at'
         ]
@@ -55,27 +55,28 @@ class SpecialistControllerTest extends TestCase
 
     function testIndex(): void
     {
-        $this->getJson(route('specialist.index'))
+        $this->getJson(route('specialists.index'))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testIndexAsClient(): void
+    function testIndexAsSpecialist(): void
     {
         $this->actingAs($this->specialist->user)
-            ->getJson(route('specialist.index'))
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+            ->getJson(route('specialists.index'))
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure(self::JSON_RESOURCE_COLLECTION_STRUCTURE);
     }
 
     function testShow(): void
     {
-        $this->getJson(route('specialist.show', ['client' => $this->specialist->id]))
+        $this->getJson(route('specialists.show', ['specialist' => $this->specialist->id]))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testShowAsClient(): void
+    function testShowAsSpecialist(): void
     {
         $this->actingAs($this->specialist->user)
-            ->get(route('specialist.show', ['client' => $this->specialist->id]))
+            ->get(route('specialists.show', ['specialist' => $this->specialist->id]))
             ->assertStatus(Response::HTTP_ACCEPTED)
             ->assertJsonStructure(self::JSON_RESOURCE_STRUCTURE);
     }
@@ -85,17 +86,17 @@ class SpecialistControllerTest extends TestCase
         $mockSpecialist = Specialist::factory()->make();
         $payload = $mockSpecialist->toArray();
 
-        $this->postJson(route('specialist.store'), $payload)
+        $this->postJson(route('specialists.store'), $payload)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testCreateAsClient(): void
+    function testCreateAsSpecialist(): void
     {
         $mockSpecialist = Specialist::factory()->make();
         $payload = $mockSpecialist->toArray();
 
         $this->actingAs($this->specialist->user)
-            ->postJson(route('specialist.store'), $payload)
+            ->postJson(route('specialists.store'), $payload)
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
@@ -103,11 +104,11 @@ class SpecialistControllerTest extends TestCase
     {
         $payload = Specialist::factory()->make()->toArray();
 
-        $this->putJson(route('specialist.update', ['client' => $this->specialist->id]), $payload)
+        $this->putJson(route('specialists.update', ['specialist' => $this->specialist->id]), $payload)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testUpdateAsClent(): void
+    function testUpdateAsSpecialist(): void
     {
         $payload = Specialist::factory()->make([
             'id' => $this->specialist->id,
@@ -115,21 +116,21 @@ class SpecialistControllerTest extends TestCase
         ])->toArray();
 
         $this->actingAs($this->specialist->user)
-            ->putJson(route('specialist.update', ['client' => $this->specialist->id]), $payload)
+            ->putJson(route('specialists.update', ['specialist' => $this->specialist->id]), $payload)
             ->assertStatus(Response::HTTP_ACCEPTED)
             ->assertJsonStructure(self::JSON_RESOURCE_STRUCTURE);
     }
 
     function testDelete(): void
     {
-        $this->deleteJson(route('specialist.destroy', ['client' => $this->specialist->id]))
+        $this->deleteJson(route('specialists.destroy', ['specialist' => $this->specialist->id]))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testDeleteAsClient(): void
+    function testDeleteAsSpecialist(): void
     {
         $this->actingAs($this->specialist->user)
-            ->deleteJson(route('specialist.destroy', ['client' => $this->specialist->id]))
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+            ->deleteJson(route('specialists.destroy', ['specialist' => $this->specialist->id]))
+            ->assertStatus(Response::HTTP_NO_CONTENT);
     }
 }

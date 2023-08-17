@@ -11,7 +11,7 @@ class UpdateSpecialistRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,8 @@ class UpdateSpecialistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shedule' => ['required', 'string'],
-            'descritpion' => ['required', 'text']
+            'schedule' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string']
         ];
     }
 }

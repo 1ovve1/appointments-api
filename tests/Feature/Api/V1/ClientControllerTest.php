@@ -10,13 +10,13 @@ class ClientControllerTest extends TestCase
 {
     const JSON_STRUCTURE = [
         'id',
-        'first_name',
-        'last_name',
-        'patronymic',
         'phone',
         'user' => [
             'login',
             'email',
+            'first_name',
+            'last_name',
+            'patronymic',
             'created_at',
             'updated_at'
         ]
@@ -106,7 +106,7 @@ class ClientControllerTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    function testUpdateAsClent(): void
+    function testUpdateAsClient(): void
     {
         $payload = Client::factory()->make([
             'id' => $this->client->id,
