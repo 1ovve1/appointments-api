@@ -16,7 +16,7 @@ class SpecialistResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'shedule' => $this->shedule,
+            'schedule' => $this->schedule,
             'description' => $this->description,
             'user' => [
                 'username' => $this->user->username,

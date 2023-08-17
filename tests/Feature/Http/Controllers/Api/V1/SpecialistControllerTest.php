@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\V1;
+namespace Tests\Feature\Http\Controllers\Api\V1;
 
 use App\Models\Specialist;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,7 @@ class SpecialistControllerTest extends TestCase
 {
     const JSON_STRUCTURE = [
         'id',
-        'shedule',
+        'schedule',
         'description',
         'user' => [
             'username',

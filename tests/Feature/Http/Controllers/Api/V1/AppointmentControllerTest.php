@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\V1;
+namespace Tests\Feature\Http\Controllers\Api\V1;
 
 use App\Models\Appointment;
 use App\Models\Client;
@@ -27,7 +27,7 @@ class AppointmentControllerTest extends TestCase
         ],
         'specialist' => [
             'id',
-            'shedule',
+            'schedule',
             'description',
             'user' => [
                 'username',

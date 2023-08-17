@@ -31,7 +31,7 @@ class AppointmentResource extends JsonResource
             ],
             'specialist' => [
                 'id' => $this->specialist->id,
-                'shedule' => $this->specialist->shedule,
+                'schedule' => $this->specialist->sсhedule,
                 'description' => $this->specialist->description,
                 'user' => [
                     'username' => $this->client->user->username,
