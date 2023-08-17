@@ -13,7 +13,7 @@ class SpecialistPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class SpecialistPolicy
      */
     public function view(User $user, Specialist $specialist): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class SpecialistPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -37,7 +37,7 @@ class SpecialistPolicy
      */
     public function update(User $user, Specialist $specialist): bool
     {
-        //
+        return $user->isAdmin() || $specialist->same($user);
     }
 
     /**
@@ -45,7 +45,7 @@ class SpecialistPolicy
      */
     public function delete(User $user, Specialist $specialist): bool
     {
-        //
+        return $user->isAdmin() || $specialist->same($user);
     }
 
     /**
@@ -53,7 +53,7 @@ class SpecialistPolicy
      */
     public function restore(User $user, Specialist $specialist): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class SpecialistPolicy
      */
     public function forceDelete(User $user, Specialist $specialist): bool
     {
-        //
+        return false;
     }
 }
