@@ -1,3 +1,30 @@
+# Insatallation
+
+Pull:
+```bash
+git clone https://github.com/1ovve1/appointments-api
+```
+
+Install:
+```bash
+composer install
+```
+
+Edit config (require configure db connection):
+```bash
+cp .env.example .env && nano .env
+```
+
+Run migrations and seeds:
+```bash
+./artisan migrate --seed
+```
+
+Run tests:
+```bash
+./artisan test
+```
+
 # Appointment REST-API
 
 All routes (expect auth) require auth. Here list of routes:
