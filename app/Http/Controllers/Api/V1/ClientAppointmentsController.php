@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Appointment\StoreAppointmentRequest;
+use App\Http\Requests\Appointment\StoreAppointmentAsClientRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Client;
@@ -26,7 +26,7 @@ class ClientAppointmentsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAppointmentRequest $request, Client $client)
+    public function store(StoreAppointmentAsClientRequest $request, Client $client)
     {
         $payload = $request->validated();
 

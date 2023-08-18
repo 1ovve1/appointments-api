@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\SpecialistAppointmentsController;
 use App\Http\Controllers\Api\V1\SpecialistController;
 use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Middleware\OnlyClientsMiddleware;
+use App\Http\Middleware\OnlySpecialistsMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
@@ -23,9 +25,13 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('specialists', SpecialistController::class);
     Route::apiResource('appointments', AppointmentController::class);
 
-    Route::apiResource('clients.appointments', ClientAppointmentsController::class)
-        ->only(['index', 'show', 'store', 'destroy']);
+    Route::middleware(OnlyClientsMiddleware::class)->group(function() {
+        Route::apiResource('clients.appointments', ClientAppointmentsController::class)
+            ->only(['index', 'show', 'store', 'destroy']);
+    });
 
-    Route::apiResource('specialists.appointments', SpecialistAppointmentsController::class)
-        ->only(['index', 'show', 'destroy']);
+    Route::middleware(OnlySpecialistsMiddleware::class)->group(function() {
+        Route::apiResource('specialists.appointments', SpecialistAppointmentsController::class)
+            ->only(['index', 'show', 'destroy']);    
+    });
 });
