@@ -1,66 +1,63 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Appointment REST-API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+All routes (expect auth) require auth. Here list of routes:
+* Appointments:
+  + GET|HEAD api/v1/appointments - show all appointments (only for admin);
+  + POST api/v1/appointments - store appointment (onlu client and admin):
+    - client_id (required);
+    - specialist_id (required);
+  + GET|HEAD api/v1/appointments/{appointment} - show appointment;
+  + PUT|PATCH api/v1/appointments/{appointment} - update appointment (only for admins, now disabled):
+    - client_id;
+    - specialist_id;
+  + DELETE api/v1/appointments/{appointment} - delete appointment (only for client and admin);
+* Auth:
+  + GET|HEAD api/v1/auth - get current user data (if user already auth);
+  + POST api/v1/auth/login - login by username_email and password fields:
+    - 'username_email' or 'email_username' or 'username' or 'email';
+    - password;
+  + POST api/v1/auth/register/client - register as client:
+    - username (required); 
+    - email (required);
+    - first_name (required);
+    - last_name (required);
+    - patronymic;
+    - phone (required);
+    - password (required);
+    - password_confimation (required);
+  + POST api/v1/auth/register/specialist - register as specialist:
+    - username (required);
+    - email (required);
+    - first_name (required);
+    - last_name (required);
+    - patronymic;
+    - schedule (required);
+    - description (required);
+    - password (required);
+    - password_confimation (required);
+* Clients:
+  + GET|HEAD api/v1/clients - get add clients list (only for admin);
+  + POST api/v1/clients - store client (only for admin):
+    - phone (required);
+  + GET|HEAD api/v1/clients/{client} - show client information;
+  + PUT|PATCH api/v1/clients/{client} - update client information (only for admin or same client):
+    - phone;
+  + DELETE api/v1/clients/{client} - delete client (only for admin);
+  + GET|HEAD api/v1/clients/{client}/appointments - show clients appointments;
+  + POST api/v1/clients/{client}/appointments - store appointment as client:
+    - specialist_id (required);
+  + GET|HEAD api/v1/clients/{client}/appointments/{appointment} - show client appointment;
+  + DELETE api/v1/clients/{client}/appointments/{appointment} - delete client appointment;
+* Specialists:
+  + GET|HEAD api/v1/specialists - show all specialists;
+  + POST api/v1/specialists - store specialist (only for admin):
+    - schedule (required);
+    - description (required);
+  + GET|HEAD api/v1/specialists/{specialist} - show specialist;
+  + PUT|PATCH api/v1/specialists/{specialist} - update specialist information (only for admin or current specialist):
+    - schedule;
+    - description;
+  + DELETE api/v1/specialists/{specialist} - delete specialist (only for admin or current specialist);
+  + GET|HEAD api/v1/specialists/{specialist}/appointments - show all appointments of current specialist;
+  + GET|HEAD api/v1/specialists/{specialist}/appointments/{appointment} - get current specialist appointment;
+  + DELETE api/v1/specialists/{specialist}/appointments/{appointment} - delete appointment on current specialist.
